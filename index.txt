@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .eyes-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .eye {
+            position: relative;
+            width: 80px;
+            height: 60px;
+            background-color: #fff;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .pupil {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 200ms ease-out;
+        }
+
+        button {
+            margin-top: 10px;
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0077B5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #005580;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="eyes-container">
+        <div class="eye" id="left-eye">
+            <div class="pupil" id="left-pupil"></div>
+        </div>
+        <div class="eye" id="right-eye">
+            <div class="pupil" id="right-pupil"></div>
+        </div>
+    </div>
+
+    <div>
+        <button onclick="redirectToLinkedIn()">Visit LinkedIn Profile</button>
+        <button onclick="redirectToGitHub()">Visit GitHub Profile</button>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', (event) => {
+            const leftEye = document.getElementById('left-eye');
+            const leftPupil = document.getElementById('left-pupil');
+            const rightEye = document.getElementById('right-eye');
+            const rightPupil = document.getElementById('right-pupil');
+
+            const eyeRect = leftEye.getBoundingClientRect();
+
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            const deltaXLeft = mouseX - (eyeRect.left + eyeRect.width / 4);
+            const deltaYLeft = mouseY - (eyeRect.top + eyeRect.height / 2);
+
+            const deltaXRight = mouseX - (eyeRect.left + 3 * eyeRect.width / 4);
+            const deltaYRight = mouseY - (eyeRect.top + eyeRect.height / 2);
+
+            updatePupilPosition(leftPupil, deltaXLeft, deltaYLeft);
+            updatePupilPosition(rightPupil, deltaXRight, deltaYRight);
+        });
+
+        function updatePupilPosition(pupil, deltaX, deltaY) {
+            const angle = Math.atan2(deltaY, deltaX);
+            const maxDistance = Math.min(pupil.parentElement.offsetWidth / 4, pupil.parentElement.offsetHeight / 4);
+            const pupilX = Math.cos(angle) * maxDistance + pupil.parentElement.offsetWidth / 2;
+            const pupilY = Math.sin(angle) * maxDistance + pupil.parentElement.offsetHeight / 2;
+            pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+        }
+
+        function redirectToLinkedIn() {
+            window.location.href = 'https://www.linkedin.com/in/hrushikeshdongre';
+        }
+
+        function redirectToGitHub() {
+            window.location.href = 'https://github.com/Hrushikeshhad123';
+        }
+    </script>
+</body>
+
+</html>
