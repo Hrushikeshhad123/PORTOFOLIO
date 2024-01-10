@@ -101,9 +101,16 @@
         }
 
         document.addEventListener('mousemove', updateEyePosition);
+        document.addEventListener('touchstart', handleTouch);
+        document.addEventListener('touchmove', handleTouch);
 
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', handleOrientation);
+        function handleTouch(event) {
+            event.preventDefault();
+            const touch = event.touches[0];
+            updateEyePosition({
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
         }
 
         function updateEyePosition(event) {
