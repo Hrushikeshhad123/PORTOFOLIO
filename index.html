@@ -78,7 +78,35 @@
     </div>
 
     <script>
-        document.addEventListener('mousemove', (event) => {
+        function handleOrientation(event) {
+            const leftEye = document.getElementById('left-eye');
+            const leftPupil = document.getElementById('left-pupil');
+            const rightEye = document.getElementById('right-eye');
+            const rightPupil = document.getElementById('right-pupil');
+
+            const beta = event.beta; // rotation around the front/back axis
+            const gamma = event.gamma; // rotation around the left/right axis
+
+            const maxRotation = 30; // Adjust this value based on your preference
+
+            const rotationLeft = Math.min(Math.max(-maxRotation, gamma), maxRotation);
+            const rotationRight = Math.min(Math.max(-maxRotation, -gamma), maxRotation);
+
+            updatePupilRotation(leftPupil, rotationLeft);
+            updatePupilRotation(rightPupil, rotationRight);
+        }
+
+        function updatePupilRotation(pupil, rotation) {
+            pupil.style.transform = `rotate(${rotation}deg)`;
+        }
+
+        document.addEventListener('mousemove', updateEyePosition);
+
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+
+        function updateEyePosition(event) {
             const leftEye = document.getElementById('left-eye');
             const leftPupil = document.getElementById('left-pupil');
             const rightEye = document.getElementById('right-eye');
@@ -97,7 +125,7 @@
 
             updatePupilPosition(leftPupil, deltaXLeft, deltaYLeft);
             updatePupilPosition(rightPupil, deltaXRight, deltaYRight);
-        });
+        }
 
         function updatePupilPosition(pupil, deltaX, deltaY) {
             const angle = Math.atan2(deltaY, deltaX);
